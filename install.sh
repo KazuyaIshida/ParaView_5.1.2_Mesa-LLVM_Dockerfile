@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# This script is for compiling ParaView with OpenGL and OSMesa using llvmpipe, OpenGLU, MPICH, Python and FFmpeg.
-# First, Makefile is created by CMake with flags.
-# Then, "make -j8" and "make -j4 install" are executed.
+# This script compilies ParaView (v5.1.2) with Mesa-LLVM.
+# First, Cmake creates the Makefile in accordance with the flags.
+# Then, "make -j8" and "make install" are executed.
 
 cmake -D BUILD_DOCUMENTATION:BOOL=OFF \
       -D BUILD_EXAMPLES:BOOL=OFF \
@@ -15,16 +15,15 @@ cmake -D BUILD_DOCUMENTATION:BOOL=OFF \
       -D PARAVIEW_ENABLE_COPROCESSING:BOOL=ON \
       -D PARAVIEW_INSTALL_DEVELOPMENT_FILES:BOOL=ON \
       -D PARAVIEW_USE_VISITBRIDGE:BOOL=ON \
-      -D PARAVIEW_USE_BOOST:BOOL=ON \
       -D VTK_RENDERING_BACKEND=OpenGL2 \
       -D VTK_USE_X:BOOL=ON \
       -D VTK_OPENGL_HAS_OSMESA:BOOL=ON \
+      -D VTK_USE_OFFSCREEN:BOOL=ON \
       -D OPENGL_INCLUDE_DIR=/usr/include \
       -D OPENGL_xmesa_INCLUDE_DIR= \
-      -D OPENGL_gl_LIBRARY=/mesa-llvm/libGL.so \
-      -D OPENGL_glu_LIBRARY=/usr/lib64/libGLU.so \
-      -D OSMESA_INCLUDE_DIR=/usr/include \
-      -D OSMESA_LIBRARY=/mesa-llvm/libOSMesa.so \
+      -D OPENGL_gl_LIBRARY=/lib/libGL.so \
+      -D OPENGL_glu_LIBRARY= \
+      -D OSMESA_LIBRARY=/lib/libOSMesa.so \
       -D PARAVIEW_ENABLE_PYTHON:BOOL=ON \
       -D PYTHON_LIBRARY=/usr/lib64/libpython2.7.so \
       -D PYTHON_INCLUDE_DIR=/usr/include/python2.7 \
@@ -43,6 +42,5 @@ cmake -D BUILD_DOCUMENTATION:BOOL=OFF \
       /root/ParaView_src
 
 make -j8
-
-make -j4 install
+make install
 
